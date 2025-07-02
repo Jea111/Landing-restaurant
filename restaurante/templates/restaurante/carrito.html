@@ -1,0 +1,405 @@
+<!-- templates/restaurante/carrito.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito de Compras - Restaurante El Sabor</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .header h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #e74c3c;
+      }
+
+      .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid #ecf0f1;
+        margin-bottom: 1rem;
+      }
+
+      .item-info {
+        flex: 1;
+      }
+
+      .item-name {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .item-price {
+        color: #7f8c8d;
+      }
+
+      .item-quantity {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 2rem;
+      }
+
+      .quantity-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s;
+      }
+
+      .quantity-btn:hover {
+        background: #2980b9;
+      }
+
+      .quantity-input {
+        width: 60px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 0.5rem;
+      }
+
+      .item-subtotal {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #e74c3c;
+        min-width: 100px;
+        text-align: right;
+      }
+
+      .remove-btn {
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .remove-btn:hover {
+        background: #c0392b;
+      }
+
+      .total-section {
+        border-top: 2px solid #e74c3c;
+        padding-top: 2rem;
+        margin-top: 2rem;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+      }
+
+      .checkout-form {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        height: 100px;
+      }
+
+      .btn {
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .empty-cart {
+        text-align: center;
+        padding: 3rem;
+        color: #7f8c8d;
+      }
+
+      .empty-cart h2 {
+        margin-bottom: 1rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        .cart-item {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .item-quantity {
+          margin: 0;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🛒 Carrito de Compras</h1>
+        <div class="nav-links">
+          <a href="{% url 'landing_restaurante' %}">← Inicio</a>
+          <a href="{% url 'menu_completo' %}">Ver Menú</a>
+          <a href="{% url 'mis_pedidos' %}">Mis Pedidos</a>
+        </div>
+      </div>
+
+      {% if items %}
+      <div class="cart-items">
+        {% for item in items %}
+        <div class="cart-item">
+          <div class="item-info">
+            <div class="item-name">{{ item.nombre }}</div>
+            <div class="item-price">${{ item.precio }} c/u</div>
+          </div>
+
+          <div class="item-quantity">
+            <button
+              class="quantity-btn"
+              onclick="cambiarCantidad('{{ item.id }}', -1)"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              class="quantity-input"
+              value="{{ item.cantidad }}"
+              min="1"
+              id="qty-{{ item.id }}"
+              onchange="actualizarCantidad('{{ item.id }}', this.value)"
+            />
+            <button
+              class="quantity-btn"
+              onclick="cambiarCantidad('{{ item.id }}', 1)"
+            >
+              +
+            </button>
+          </div>
+
+          <div class="item-subtotal">${{ item.subtotal }}</div>
+
+          <button class="remove-btn" onclick="eliminarItem('{{ item.id }}')">
+            Eliminar
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="total-section">
+        <div class="total-row">
+          <span>Total:</span>
+          <span id="total-amount">${{ total }}</span>
+        </div>
+
+        <form
+          class="checkout-form"
+          method="post"
+          action="{% url 'confirmar_pedido' %}"
+        >
+          {% csrf_token %}
+          <h3 style="margin-bottom: 1rem; color: #2c3e50">
+            Información de Entrega
+          </h3>
+
+          <div class="form-group">
+            <label for="direccion">Dirección de Entrega *</label>
+            <textarea
+              id="direccion"
+              name="direccion"
+              required
+              placeholder="Ingresa tu dirección completa"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono *</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              required
+              placeholder="Ej: 300 123 4567"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="notas">Notas Especiales (Opcional)</label>
+            <textarea
+              id="notas"
+              name="notas"
+              placeholder="Instrucciones especiales para tu pedido"
+            ></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">
+              Confirmar Pedido
+            </button>
+            <a href="{% url 'landing_restaurante' %}" class="btn btn-secondary"
+              >Seguir Comprando</a
+            >
+          </div>
+        </form>
+      </div>
+      {% else %}
+      <div class="empty-cart">
+        <h2>Tu carrito está vacío</h2>
+        <p>¡Agrega algunos deliciosos platillos a tu carrito!</p>
+        <div class="actions">
+          <a href="{% url 'menu_completo' %}" class="btn btn-primary"
+            >Ver Menú</a
+          >
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <script>
+      function cambiarCantidad(itemId, cambio) {
+        const input = document.getElementById("qty-" + itemId);
+        let nuevaCantidad = parseInt(input.value) + cambio;
+        if (nuevaCantidad < 1) nuevaCantidad = 1;
+        input.value = nuevaCantidad;
+        actualizarCantidad(itemId, nuevaCantidad);
+      }
+
+      function actualizarCantidad(itemId, cantidad) {
+        console.log("Actualizar item:", itemId, "cantidad:", cantidad);
+      }
+
+      function eliminarItem(itemId) {
+        if (confirm("¿Estás seguro de que quieres eliminar este item?")) {
+          console.log("Eliminar item:", itemId);
+        }
+      }
+
+      // Función para obtener el token CSRF
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+    </script>
+  </body>
+</html>

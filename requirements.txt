@@ -1,0 +1,12 @@
+# requirements.txt
+Django>=4.2,<5.0
+Pillow>=10.0.0  # Para manejo de imágenes
+python-decouple>=3.8  # Para variables de entorno (opcional)
+
+# Para desarrollo
+django-debug-toolbar>=4.0  # Herramientas de debug (opcional)
+
+# Para producción (opcional)
+gunicorn>=20.1.0
+psycopg2-binary>=2.9.0  # Para PostgreSQL
+whitenoise>=6.5.0  # Para servir archivos estáticos
