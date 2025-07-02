@@ -1,4 +1,3 @@
-# views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -174,8 +173,17 @@ from django.http import HttpResponse
 
 def usuarios(request):
     if request.method == 'POST':
+        
         correo = request.POST['correo']
         password = request.POST['password']
-        Usuarios.objects.create(correo=correo,password=password)
-        return render(request,'restaurante/landing.html')
-    return render(request,'restaurante/registro.html')
+                
+        # Verificar si el usuario ya existe
+        if not Usuarios.objects.filter(correo=correo).exists(): #Filtra los registros donde el campo 'correo' coincida exactamente con el valor de la variable 'correo'
+            Usuarios.objects.create(correo=correo, password=password)
+            return render(request,'restaurante/landing.html')
+        else:
+            return HttpResponse('El usuario ya existe')
+    tittle = 'Formulario de Registro'
+    return render(request,'restaurante/registro.html',{
+            'tittle':tittle,
+        })

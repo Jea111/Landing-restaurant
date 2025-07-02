@@ -1,4 +1,3 @@
-# admin.py
 from django.contrib import admin
 from .models import Categoria, Producto, Pedido, ItemPedido,Usuarios
 
@@ -61,6 +60,5 @@ class ItemPedidoAdmin(admin.ModelAdmin):
 admin.site.site_header = "Administración del Restaurante"
 admin.site.site_title = "Restaurante Admin"
 admin.site.index_title = "Panel de Administración"
-
 
 admin.site.register(Usuarios)
